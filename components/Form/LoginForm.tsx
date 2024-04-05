@@ -39,7 +39,7 @@ export function LoginForm() {
     const response = await auth.Login(data.email, data.password);
 
     if (response){
-      router.push('/register');
+      router.push('/home');
     } else {
       setInvalidLogin(true);
     }

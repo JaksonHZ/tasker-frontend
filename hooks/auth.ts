@@ -16,8 +16,25 @@ const Login = async (email: string, password: string) => {
   }
 }
 
+const Register = async (email: string, username: string, password: string) => {
+  try {
+    const response = await api.post("/register", {
+      email,
+      username,
+      password
+    });
+    localStorage.setItem("access_token", response.data.access_token);
+    localStorage.setItem("refresh_token", response.data.refresh_token);
+    return response;
+  } catch (error) {
+    return
+  }
+
+}
+
 export const useAuth = () => {
   return {
-    Login
+    Login,
+    Register
   }
 }

@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form } from './index'
 import { useRouter } from 'next/navigation'
+import { useAuth } from '@/hooks/auth'
 
 const createUserSchema = z.object({
   email: z
@@ -34,6 +35,17 @@ type CreateUserData = z.infer<typeof createUserSchema>
 export function RegisterForm() {
 
   const router = useRouter();
+  const auth = useAuth();
+
+  const onSubmit = async (data: CreateUserData) => {
+    const response = await auth.Register(data.email, data.username, data.password);
+
+    if (response){
+      router.push('/home');
+    } else {
+      console.log('Error')
+    }
+  }
 
   const createUserForm = useForm<CreateUserData>({
     resolver: zodResolver(createUserSchema),
@@ -52,7 +64,7 @@ export function RegisterForm() {
     <main className="h-screen w-full flex flex-row gap-6 items-center justify-center">
       <FormProvider {...createUserForm}>
         <form 
-          onSubmit={handleSubmit((data) => {console.log(data)})}
+          onSubmit={handleSubmit((data) => {onSubmit(data)})}
           className="flex flex-col gap-4 w-full max-w-xs"
         >
 

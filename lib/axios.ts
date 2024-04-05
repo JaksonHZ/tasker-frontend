@@ -38,7 +38,7 @@ async function refreshToken(error: any) {
       };
       axios
         .post(
-          process.env.API_URL + "/refreshtoken",
+          process.env.API_URL + "/refresh-token",
           body,
           parameters
         )
