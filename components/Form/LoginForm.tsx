@@ -1,9 +1,11 @@
 'use client'
-import { useForm, FormProvider } from 'react-hook-form'
+import { useState } from 'react'
+import { useForm, FormProvider, set } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form } from './index'
 import { useRouter } from 'next/navigation'
+import { useAuth } from '@/hooks/auth'
 
 
 const createUserSchema = z.object({
@@ -19,8 +21,9 @@ const createUserSchema = z.object({
 type CreateUserData = z.infer<typeof createUserSchema>
 
 export function LoginForm() {
-
+  const auth = useAuth();
   const router = useRouter();
+  const [invalidLogin, setInvalidLogin] = useState(false);
 
   const createUserForm = useForm<CreateUserData>({
     resolver: zodResolver(createUserSchema),
@@ -32,11 +35,22 @@ export function LoginForm() {
     watch,
   } = createUserForm;
 
+  async function handleLogin(data: CreateUserData) {
+    const response = await auth.Login(data.email, data.password);
+
+    if (response){
+      router.push('/register');
+    } else {
+      setInvalidLogin(true);
+    }
+    
+  }
+
   return (
     <main className="h-screen w-full flex flex-row gap-6 items-center justify-center">
       <FormProvider {...createUserForm}>
         <form 
-          onSubmit={handleSubmit((data) => {console.log(data)})}
+          onSubmit={handleSubmit((data) => {handleLogin(data)})}
           className="flex flex-col gap-4 w-full max-w-xs"
         >
 
@@ -55,6 +69,9 @@ export function LoginForm() {
             <Form.Input type="password" name="password" />
             <Form.ErrorMessage field="password" />
           </Form.Field>
+
+          {invalidLogin && <span className='text-red-500 text-sm'>E-mail ou senha inválidos</span>}
+          
           <div className='w-full flex flex-col gap-2'>
             <button 
               type="submit" 
