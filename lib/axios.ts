@@ -29,7 +29,7 @@ async function refreshToken(error: any) {
         "Content-Type": "application/json",
       };
       const parameters = {
-        method: "POST",
+        method: "PATCH",
         headers: header,
       };
       const body = {
@@ -38,7 +38,7 @@ async function refreshToken(error: any) {
       };
       axios
         .post(
-          process.env.API_URL + "/refresh-token",
+          "http://localhost:3333/refresh-token",
           body,
           parameters
         )
