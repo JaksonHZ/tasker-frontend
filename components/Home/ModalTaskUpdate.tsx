@@ -34,6 +34,17 @@ const ModalTaskUpdate: React.FC<ModalTaskProps> = ({ isOpen, itemTODO, onClose, 
     });
   }
 
+  const handleDeleteItem = async () => {
+    try {
+      await api.delete(`/item/${item.id}`).then(() => {
+        handleOnClose();
+        fetchList();
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const handleUpdateItem = async () => {
     console.log(item)
     const bodyItem = {
@@ -111,9 +122,9 @@ const ModalTaskUpdate: React.FC<ModalTaskProps> = ({ isOpen, itemTODO, onClose, 
         </div>
 
         <div className="flex flex-row justify-center gap-9 mt-7">
-          <button className="border-[#A9A9A9]  px-2 border-2 text-[#656262] rounded-lg"type="button"
-            onClick={handleOnClose}>
-            Discard
+          <button className="border-[#E57373]  px-2 border-2 text-[#E57373] hover:bg-[#E57373] hover:text-white rounded-lg"type="button"
+            onClick={handleDeleteItem}>
+            Delete
           </button>
           <button 
             className="bg-[#A9A9A9] px-2 text-white rounded-lg" type="button"
