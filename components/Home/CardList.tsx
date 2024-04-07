@@ -5,6 +5,7 @@ import { ListTodo, ItemTODO } from '@/types/ListTodo';
 import { Trash2 } from 'lucide-react';
 import ModalTask from './ModalTask';
 import api from '@/lib/axios';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 interface CardListProps {
   list: ListTodo;
@@ -36,11 +37,47 @@ export default function CardList({ list, handleDeleteList,fetchList }: CardListP
         <span className='text-xl text-[#656262]'>Create task</span>
       </button>
 
-      {
+      {/* {
         list.ItemTODO.map((item, i) => (
           <Item key={i} item={item} fetchList={fetchList} />
         ))
-      }
+      } */}
+
+      
+      { 
+
+        <Droppable droppableId={`droppable${list.id}`}>
+          {
+            (provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {
+                  list.ItemTODO.map((item, index) => (
+                    <Draggable key={item.id} draggableId={item.id} index={index}>
+                      {
+                        (provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <Item item={item} fetchList={fetchList} />
+                          </div>
+                        )
+                      }
+                    </Draggable>
+                  ))
+                }
+                {provided.placeholder}
+              </div>
+            )
+          }
+        </Droppable>
+    }
+
+
 
       <div className='w-[260px] h-[1px] bg-black'/>
 

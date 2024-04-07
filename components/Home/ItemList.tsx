@@ -25,7 +25,7 @@ export default function Item({ item, fetchList }: ItemProps){
   }
 
   return (
-    <div className="flex w-[260px] flex-row py-2 px-5 border-2 border-solid border-[#A9A9A9] rounded-3xl bg-[#F8F8F8] justify-between">
+    <div className="flex w-[260px] flex-row py-2 px-5 border-2 border-solid border-[#A9A9A9] rounded-3xl bg-[#F8F8F8] justify-between mt-3">
       <div className="flex flex-col w-[80%]">
         <div className="flex flex-row gap-x-1  items-center">
           <div className="w-[20px] h-1 rounded-xl" style={{backgroundColor: `${item.Category?.color}`}}/>
