@@ -12,7 +12,6 @@ interface CardListProps {
   fetchList: () => void;
 }
 
-
 export default function CardList({ list, handleDeleteList,fetchList }: CardListProps){
   const [showModalTask, setShowModalTask] = useState<boolean>(false);
 

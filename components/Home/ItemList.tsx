@@ -10,17 +10,13 @@ interface ItemProps {
 }
 
 export default function Item({ item, fetchList }: ItemProps){
-  const accessToken = localStorage.getItem("access_token");
   const [done, setDone] = useState<boolean>(item.done);
   const [modalTask, setModalTask] = useState<boolean>(false);
 
   const handleCheck = async () => {
     try {
-      await api.put(`/item`, { id: item.id, done: !item.done }, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        }
-      }).then(() => {
+      await api.put(`/item`, { id: item.id, done: !item.done })
+      .then(() => {
         setDone(!done);
       });
     } catch (error) {

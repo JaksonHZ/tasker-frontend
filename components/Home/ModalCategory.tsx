@@ -14,11 +14,8 @@ const ModalCategory: React.FC<ModalCategoryProps> = ({ isOpen, onClose }) => {
 
   const handleSaveCategory = () => {
     try {
-      api.post("/category", { name, color }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`
-        }
-      }).then(() => {
+      api.post("/category", { name, color })
+      .then(() => {
         onClose();
         setColor("#000000");
         setName("");

@@ -12,7 +12,6 @@ export default function Page() {
   const [showCardCreateList, setShowCardCreateList] = useState<boolean>(false);
   const [showCardCreateCategory, setShowCardCreateCategory] = useState<boolean>(false);
   const [list, setList] = useState([]);
-  const accessToken = localStorage.getItem("access_token");
 
   const handleShowCardCreateList = () => {
     setShowCardCreateList(true);
@@ -26,10 +25,7 @@ export default function Page() {
   const fetchList = async () => {
 
     try {
-      const response = await api.get("/user/list", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        }})
+      const response = await api.get("/user/list")
         console.log(response.data);
         setList(response.data.lists);
       } catch (error) {
@@ -41,11 +37,8 @@ export default function Page() {
   const handleSaveClick = () => {
     try {
       const orderNumber = list.length + 1;
-      api.post("/list", { title: inputListTitle, orderNumber }, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        }
-      }).then(() => {
+      api.post("/list", { title: inputListTitle, orderNumber })
+      .then(() => {
         setShowCardCreateList(false);
         setInputListTitle("");
         fetchList();
@@ -58,11 +51,8 @@ export default function Page() {
   const handleDeleteList = (id: string) => {
     try {
       console.log(id)
-      api.delete(`/list/${id}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        }
-      }).then(() => {
+      api.delete(`/list/${id}`)
+      .then(() => {
         fetchList();
       });
     } catch (error) {

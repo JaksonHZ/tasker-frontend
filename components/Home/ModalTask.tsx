@@ -13,7 +13,6 @@ interface ModalTaskProps {
 
 const ModalTask: React.FC<ModalTaskProps> = ({ isOpen, onClose, list, fetchList }) => {
 
-  const accessToken = localStorage.getItem('access_token');
   const [categorys, setCategorys] = useState<Category[]>();
   const [item, setItem] = useState<ItemTODO>({
     id: "",
@@ -42,11 +41,8 @@ const ModalTask: React.FC<ModalTaskProps> = ({ isOpen, onClose, list, fetchList 
       };
         console.log(bodyItem);
         console.log(item.description)
-      await api.post("/item", bodyItem, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        }
-      }).then(() => {
+      await api.post("/item", bodyItem)
+      .then(() => {
         handleOnClose();
         fetchList();
       });
@@ -77,11 +73,7 @@ const ModalTask: React.FC<ModalTaskProps> = ({ isOpen, onClose, list, fetchList 
   useEffect(() => {
     const fetchCategorys = async () => {
       try {
-        const response = await api.get("/category", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          }
-        });
+        const response = await api.get("/category");
         console.log(response.data);
         setCategorys(response.data.category);
       } catch (error) {
