@@ -9,10 +9,11 @@ import api from '@/lib/axios';
 interface CardListProps {
   list: ListTodo;
   handleDeleteList: (id: string) => void;
+  fetchList: () => void;
 }
 
 
-export default function CardList({ list, handleDeleteList }: CardListProps){
+export default function CardList({ list, handleDeleteList,fetchList }: CardListProps){
   const [showModalTask, setShowModalTask] = useState<boolean>(false);
 
   return(
@@ -22,6 +23,7 @@ export default function CardList({ list, handleDeleteList }: CardListProps){
         isOpen={showModalTask} 
         onClose={() => setShowModalTask(false)}
         list={list}
+        fetchList={fetchList}
       />
 
       <h1 className='text-xl font-semibold text-[#656262]'>{list.title}</h1>

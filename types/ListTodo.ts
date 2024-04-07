@@ -1,3 +1,9 @@
+export interface Category {
+    id: string;
+    name: string;
+    color: string;
+}
+
 export interface ItemTODO {
   id: string;
   title: string;
@@ -6,6 +12,7 @@ export interface ItemTODO {
   order: number;
   listTODOId: string;
   categoryId: string | null;
+  Category: Category | null;
 }
 
 export interface ListTodo {

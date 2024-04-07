@@ -4,10 +4,13 @@ import ButtonCreate from "@/components/Home/ButtonCreate";
 import CardCreateList from "@/components/Home/CardCreateList";
 import CardList from "@/components/Home/CardList";
 import api from "@/lib/axios";
+import { Bookmark, CirclePlus } from "lucide-react";
+import ModalCategory from "@/components/Home/ModalCategory";
 
 export default function Page() {
   const [inputListTitle, setInputListTitle] = useState<string>("");
   const [showCardCreateList, setShowCardCreateList] = useState<boolean>(false);
+  const [showCardCreateCategory, setShowCardCreateCategory] = useState<boolean>(false);
   const [list, setList] = useState([]);
   const accessToken = localStorage.getItem("access_token");
 
@@ -79,7 +82,8 @@ export default function Page() {
         <div className="flex flex-row gap-x-5">
           {
             list.map((list, i) => (
-              <CardList 
+              <CardList
+                fetchList={fetchList}
                 key={i} 
                 list={list} 
                 handleDeleteList={handleDeleteList}
@@ -94,7 +98,24 @@ export default function Page() {
               handleSaveClick={handleSaveClick}
             />
           )}
-          <ButtonCreate onClick={handleShowCardCreateList} />
+          <div className="flex flex-col gap-2">
+            <ButtonCreate 
+              text="Create List"
+              onClick={handleShowCardCreateList}
+              Icon={<CirclePlus size={24} color="white"/>} 
+            />
+            
+            <ButtonCreate 
+              text="Create Category"
+              Icon={<Bookmark size={24} color="white"/>}
+              onClick={() => setShowCardCreateCategory(true)}
+            />
+
+            <ModalCategory 
+              isOpen={showCardCreateCategory}
+              onClose={() => setShowCardCreateCategory(false)}
+            />
+          </div>
         </div>
       </div>
     </main>

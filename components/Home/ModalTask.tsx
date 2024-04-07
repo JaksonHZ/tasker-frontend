@@ -1,18 +1,20 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { X } from 'lucide-react';
 import api from "@/lib/axios";
 import { ItemTODO, ListTodo } from "@/types/ListTodo";
-
+import { Category } from "@/types/ListTodo";
 interface ModalTaskProps {
   isOpen: boolean;
   onClose: () => void;
   list: ListTodo;
+  fetchList: () => void;
 }
 
-const ModalTask: React.FC<ModalTaskProps> = ({ isOpen, onClose, list }) => {
+const ModalTask: React.FC<ModalTaskProps> = ({ isOpen, onClose, list, fetchList }) => {
 
   const accessToken = localStorage.getItem('access_token');
+  const [categorys, setCategorys] = useState<Category[]>();
   const [item, setItem] = useState<ItemTODO>({
     id: "",
     title: "",
@@ -21,8 +23,14 @@ const ModalTask: React.FC<ModalTaskProps> = ({ isOpen, onClose, list }) => {
     order: 0,
     listTODOId: "",
     categoryId: "none",
+    Category: {
+      id: "",
+      name: "",
+      color: "",
+    }
   });
 
+  //criar um ItemTODO(task)
   const handleCreateItem = async (item: ItemTODO) => {
     try {
       const bodyItem = {
@@ -40,6 +48,7 @@ const ModalTask: React.FC<ModalTaskProps> = ({ isOpen, onClose, list }) => {
         }
       }).then(() => {
         handleOnClose();
+        fetchList();
       });
     } catch (error) {
       console.log(error);
@@ -56,13 +65,37 @@ const ModalTask: React.FC<ModalTaskProps> = ({ isOpen, onClose, list }) => {
       order: 0,
       listTODOId: "",
       categoryId: "none",
+      Category: {
+        id: "",
+        name: "",
+        color: "",
+      }
     });
   }
+
+  //pegar todas as categorias do usuário
+  useEffect(() => {
+    const fetchCategorys = async () => {
+      try {
+        const response = await api.get("/category", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          }
+        });
+        console.log(response.data);
+        setCategorys(response.data.category);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchCategorys();
+  }, [])
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full bg-opacity-65 flex items-center justify-center">
+    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center" style={{backgroundColor: "rgba(0, 0, 0, 0.5)"}}>
       <div className="shadow p-8 flex flex-col rounded-2xl bg-white border-2 border-solid border-[#FF7550] relative">
 
         <X size={28} onClick={handleOnClose} className="absolute right-2 cursor-pointer top-2"/>
@@ -91,9 +124,11 @@ const ModalTask: React.FC<ModalTaskProps> = ({ isOpen, onClose, list }) => {
             onChange={(e) => setItem({...item, categoryId: e.target.value})}
           >
             <option value="none">Nenhuma</option>
-            <option value="1">Categoria 1</option>
-            <option value="2">Categoria 2</option>
-            <option value="3">Categoria 3</option>
+            {
+              categorys?.map((category, i) => (
+                <option key={i} value={category.id}>{category.name}</option>
+              ))
+            }
           </select>
         </div>
 
