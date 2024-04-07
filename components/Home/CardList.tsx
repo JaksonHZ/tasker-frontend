@@ -36,16 +36,8 @@ export default function CardList({ list, handleDeleteList,fetchList }: CardListP
         <CirclePlus size={24} color="#656262" />
         <span className='text-xl text-[#656262]'>Create task</span>
       </button>
-
-      {/* {
-        list.ItemTODO.map((item, i) => (
-          <Item key={i} item={item} fetchList={fetchList} />
-        ))
-      } */}
-
       
       { 
-
         <Droppable droppableId={`droppable${list.id}`}>
           {
             (provided) => (
@@ -78,17 +70,18 @@ export default function CardList({ list, handleDeleteList,fetchList }: CardListP
     }
 
 
+      <div className='flex flex-col gap-2'>
+        <div className='w-[260px] h-[1px] bg-black'/>
 
-      <div className='w-[260px] h-[1px] bg-black'/>
-
-      <button 
-        className="flex w-[260px] h-8 px-2 py-2 flex-row gap-2 items-center bg-[#F8F8F8] rounded-lg border-2 border-solid border-[#A9a9a9] hover:bg-red-600
-        text-xl text-[#656262] hover:text-white"
-        onClick={() => handleDeleteList(list.id)}
-        >
-        <Trash2 size={24} color="#656262"/>
-        Delete List
-      </button>
+        <button 
+          className="flex w-[260px] h-8 px-2 py-2 flex-row gap-2 items-center bg-[#F8F8F8] rounded-lg border-2 border-solid border-[#A9a9a9] hover:bg-red-600
+          text-xl text-[#656262] hover:text-white"
+          onClick={() => handleDeleteList(list.id)}
+          >
+          <Trash2 size={24} color="#656262"/>
+          Delete List
+        </button>
+      </div>
 
     </div>
   )

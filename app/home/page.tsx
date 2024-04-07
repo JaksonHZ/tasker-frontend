@@ -7,7 +7,7 @@ import api from "@/lib/axios";
 import { Bookmark, CirclePlus } from "lucide-react";
 import ModalCategory from "@/components/Home/ModalCategory";
 import { DndContext } from "@/context/DndContent";
-import { DropResult, Droppable } from "react-beautiful-dnd";
+import { DropResult } from "react-beautiful-dnd";
 import { ListTodo } from "@/types/ListTodo";
 
 export default function Page() {
@@ -51,6 +51,7 @@ export default function Page() {
     }
   };
 
+  //deletar uma lista
   const handleDeleteList = (id: string) => {
     try {
       console.log(id)
@@ -63,6 +64,7 @@ export default function Page() {
     }
   }
 
+  //mudar a ordem dos itens da lista quando arrastados
   const handleChangeOrderList = async (updatedList: ListTodo) => {
     const body = {
       listTODOId: updatedList.id,
@@ -83,6 +85,7 @@ export default function Page() {
     }
   }
 
+  //ação para quando o item é arrastado
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
 
@@ -114,10 +117,10 @@ export default function Page() {
   useEffect(() => {
     fetchList();
   }, [])
-
+  
   return (
-    <main className="p-[84px]">
-      <div className="w-full h-full min-h-[850px] border-2 border-[#FF7550] rounded-xl border-solid p-8">
+    <main className="p-[4%]">
+      <div className="h-full w-max min-w-full min-h-[850px] border-2 border-[#FF7550] rounded-xl border-solid p-8">
         <h2 className="text-2xl font-semibold text-[#FF7550] mb-6">Minhas Listas</h2>
         <div className="flex flex-row gap-x-5">
           

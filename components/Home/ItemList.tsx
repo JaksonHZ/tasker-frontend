@@ -13,6 +13,8 @@ export default function Item({ item, fetchList }: ItemProps){
   const [done, setDone] = useState<boolean>(item.done);
   const [modalTask, setModalTask] = useState<boolean>(false);
 
+
+  //atualizar o status da tarefa
   const handleCheck = async () => {
     try {
       await api.put(`/item`, { id: item.id, done: !item.done })

@@ -12,6 +12,7 @@ const ModalCategory: React.FC<ModalCategoryProps> = ({ isOpen, onClose }) => {
   const [color, setColor] = useState<string>("#000000");
   const [name, setName] = useState<string>("");
 
+  //salvar uma nova categoria
   const handleSaveCategory = () => {
     try {
       api.post("/category", { name, color })
@@ -25,6 +26,7 @@ const ModalCategory: React.FC<ModalCategoryProps> = ({ isOpen, onClose }) => {
     }
   }
 
+  //descartar a categoria
   const handleDiscard = () => {
     onClose();
     setColor("#000000");

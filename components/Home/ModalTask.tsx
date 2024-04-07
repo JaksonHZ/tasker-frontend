@@ -51,6 +51,7 @@ const ModalTask: React.FC<ModalTaskProps> = ({ isOpen, onClose, list, fetchList 
     }
   }
 
+  //fechar o modal
   const handleOnClose = () => {
     onClose();
     setItem({

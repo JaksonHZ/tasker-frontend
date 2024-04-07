@@ -7,8 +7,10 @@ const api = axios.create({
   baseURL: "http://localhost:3333",
 });
 
+// Rotas que não precisam de token
 const routesWithoutToken = ['/refresh-token', '/register', '/authenticate'];
 
+// Interceptor para adicionar o token nas requisições
 api.interceptors.request.use((config) => {
   const requiresToken = !routesWithoutToken.some(route => config.url?.includes(route));
 
@@ -23,6 +25,7 @@ api.interceptors.request.use((config) => {
 }, (error) => {
   return Promise.reject(error);
 });
+
 
 async function refreshToken() {
   const refreshToken = localStorage.getItem('refresh_token');
