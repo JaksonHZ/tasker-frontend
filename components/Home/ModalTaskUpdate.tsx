@@ -7,53 +7,15 @@ import { Category } from "@/types/ListTodo";
 interface ModalTaskProps {
   isOpen: boolean;
   onClose: () => void;
-  list: ListTodo;
   fetchList: () => void;
+  itemTODO: ItemTODO;
 }
 
-const ModalTask: React.FC<ModalTaskProps> = ({ isOpen, onClose, list, fetchList }) => {
+const ModalTaskUpdate: React.FC<ModalTaskProps> = ({ isOpen, itemTODO, onClose, fetchList }) => {
 
   const accessToken = localStorage.getItem('access_token');
   const [categorys, setCategorys] = useState<Category[]>();
-  const [item, setItem] = useState<ItemTODO>({
-    id: "",
-    title: "",
-    description: "",
-    done: false,
-    order: 0,
-    listTODOId: "",
-    categoryId: "none",
-    Category: {
-      id: "",
-      name: "",
-      color: "",
-    }
-  });
-
-  //criar um ItemTODO(task)
-  const handleCreateItem = async (item: ItemTODO) => {
-    try {
-      const bodyItem = {
-        listTODOId: list.id,
-        title: item.title,
-        order: list.ItemTODO.length + 1 ,
-        description: item.description,
-        ...(item.categoryId !== "none" && { categoryId: item.categoryId }),
-      };
-        console.log(bodyItem);
-        console.log(item.description)
-      await api.post("/item", bodyItem, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        }
-      }).then(() => {
-        handleOnClose();
-        fetchList();
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const [item, setItem] = useState<ItemTODO>(itemTODO);
 
   const handleOnClose = () => {
     onClose();
@@ -71,6 +33,31 @@ const ModalTask: React.FC<ModalTaskProps> = ({ isOpen, onClose, list, fetchList 
         color: "",
       }
     });
+  }
+
+  const handleUpdateItem = async () => {
+    console.log(item)
+    const bodyItem = {
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      done: item.done,
+      order: item.order,
+      listTODOId: item.listTODOId,
+      categoryId: item.categoryId,
+    }
+    try {
+      await api.put(`/item`, item, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        }
+      }).then(() => {
+        handleOnClose();
+        fetchList();
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   //pegar todas as categorias do usuário
@@ -139,9 +126,9 @@ const ModalTask: React.FC<ModalTaskProps> = ({ isOpen, onClose, list, fetchList 
           </button>
           <button 
             className="bg-[#A9A9A9] px-2 text-white rounded-lg" type="button"
-            onClick={() => handleCreateItem(item)}
+            onClick={() => handleUpdateItem()}
             disabled={!item.title}
-            style={{cursor: !item.title ? "not-allowed" : "pointer"}}  
+            style={{cursor: !item.title ? "not-allowed" : "pointer"}}
           >
             Save
           </button>
@@ -152,4 +139,4 @@ const ModalTask: React.FC<ModalTaskProps> = ({ isOpen, onClose, list, fetchList 
   );
 };
 
-export default ModalTask;
+export default ModalTaskUpdate;

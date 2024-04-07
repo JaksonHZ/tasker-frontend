@@ -39,7 +39,7 @@ export default function CardList({ list, handleDeleteList,fetchList }: CardListP
 
       {
         list.ItemTODO.map((item, i) => (
-          <Item key={i} {...item}/>
+          <Item key={i} item={item} fetchList={fetchList} />
         ))
       }
 
