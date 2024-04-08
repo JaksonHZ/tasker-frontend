@@ -4,18 +4,22 @@ import ButtonCreate from "@/components/Home/ButtonCreate";
 import CardCreateList from "@/components/Home/CardCreateList";
 import CardList from "@/components/Home/CardList";
 import api from "@/lib/axios";
-import { Bookmark, CirclePlus } from "lucide-react";
+import { Bookmark, CirclePlus, Router } from "lucide-react";
 import ModalCategory from "@/components/Home/ModalCategory";
 import { DndContext } from "@/context/DndContent";
 import { DropResult } from "react-beautiful-dnd";
 import { ListTodo } from "@/types/ListTodo";
+import { LogOut } from 'lucide-react';
+import { useAuth } from "@/hooks/auth";
+import { useRouter } from 'next/navigation'
 
 export default function Page() {
   const [inputListTitle, setInputListTitle] = useState<string>("");
   const [showCardCreateList, setShowCardCreateList] = useState<boolean>(false);
   const [showCardCreateCategory, setShowCardCreateCategory] = useState<boolean>(false);
   const [list, setList] = useState<ListTodo[] | []>([]);
-
+  const auth = useAuth();
+  const router = useRouter();
   const handleShowCardCreateList = () => {
     setShowCardCreateList(true);
   };
@@ -113,13 +117,25 @@ export default function Page() {
       }
   };
 
+  const handleLogout = () => {
+
+    auth.Logout();
+    router.push('/');
+  }
+
 
   useEffect(() => {
     fetchList();
   }, [])
   
   return (
-    <main className="p-[4%]">
+    <main className="p-[4%] flex flex-col">
+      <ButtonCreate 
+        text="Logout"
+        className="self-end mb-1 bg-red-600 w-[160px]"
+        Icon={<LogOut size={24} color="white"/>}
+        onClick={() => handleLogout()}
+      />
       <div className="h-full w-max min-w-full min-h-[850px] border-2 border-[#FF7550] rounded-xl border-solid p-8">
         <h2 className="text-2xl font-semibold text-[#FF7550] mb-6">Minhas Listas</h2>
         <div className="flex flex-row gap-x-5">

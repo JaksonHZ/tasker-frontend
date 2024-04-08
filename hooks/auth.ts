@@ -1,6 +1,5 @@
 import api from "@/lib/axios";
 
-
 const Login = async (email: string, password: string) => {
   try {
     const response = await api.post("/authenticate", {
@@ -32,9 +31,17 @@ const Register = async (email: string, username: string, password: string) => {
 
 }
 
+const Logout = () => {
+
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("refresh_token");
+
+}
+
 export const useAuth = () => {
   return {
     Login,
-    Register
+    Register,
+    Logout
   }
 }
