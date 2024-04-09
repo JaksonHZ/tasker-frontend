@@ -46,13 +46,17 @@ const ModalTaskUpdate: React.FC<ModalTaskProps> = ({ isOpen, itemTODO, onClose, 
   }
 
   const handleUpdateItem = async () => {
+
     const bodyItem = {
       id: item.id,
       title: item.title,
       description: item.description,
       listTODOId: item.listTODOId,
-      categoryId: item.categoryId === "none" ? null : item.categoryId,
+      ...(item.categoryId !== null && { categoryId: item.categoryId })
     }
+
+    console.log(bodyItem)
+
     try {
       await api.put(`/item`, bodyItem).then(() => {
         handleOnClose();

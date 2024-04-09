@@ -41,7 +41,7 @@ export function RegisterForm() {
     const response = await auth.Register(data.email, data.username, data.password);
 
     if (response){
-      router.push('/home');
+      router.push('/');
     } else {
       console.log('Error')
     }

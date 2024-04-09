@@ -132,7 +132,7 @@ export default function Page() {
     <main className="p-[4%] flex flex-col">
       <ButtonCreate 
         text="Logout"
-        className="self-end mb-1 bg-red-600 w-[160px]"
+        className="mb-1 bg-red-600 w-[160px]"
         Icon={<LogOut size={24} color="white"/>}
         onClick={() => handleLogout()}
       />
