@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { CirclePlus } from 'lucide-react';
 import Item from './ItemList';
 import { ListTodo, ItemTODO } from '@/types/ListTodo';
@@ -16,6 +16,30 @@ interface CardListProps {
 export default function CardList({ list, handleDeleteList,fetchList }: CardListProps){
   const [showModalTask, setShowModalTask] = useState<boolean>(false);
 
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>(list.title);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // funcao para editar o titulo da lista com double click
+  const handleDoubleClick = () => {
+    setIsEditing(true);
+    setTimeout(() => inputRef.current?.focus(), 0); // foca no input
+  };
+  
+  // funcao para salvar o titulo da lista
+  const handleBlur = async () => {
+    if (title.trim() === '') {
+      setTitle(list.title);
+    } else {
+      await api.put(`/list/${list.id}`, { title }).then(() => fetchList());
+    }
+    setIsEditing(false);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
   return(
     <div className='flex flex-col py-3 px-5 border-2 border-solid border-[#A9A9A9] rounded-3xl items-center gap-y-7 bg-[#F8F8F8]'>
 
@@ -26,7 +50,20 @@ export default function CardList({ list, handleDeleteList,fetchList }: CardListP
         fetchList={fetchList}
       />
 
-      <h1 className='text-xl font-semibold text-[#656262]'>{list.title}</h1>
+      {
+        isEditing 
+        ? 
+        <input
+          ref={inputRef}
+          type="text"
+          value={title}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
+        :
+        <h1 onDoubleClick={() => handleDoubleClick()} className='text-xl font-semibold text-[#656262]'>{list.title}</h1>
+      }
+
 
       <button 
         type='button'
