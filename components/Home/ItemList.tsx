@@ -17,7 +17,7 @@ export default function Item({ item, fetchList }: ItemProps){
   //atualizar o status da tarefa
   const handleCheck = async () => {
     try {
-      await api.put(`/item`, { id: item.id, done: !item.done })
+      await api.put(`/item/${item.id}`, { done: !item.done })
       .then(() => {
         setDone(!done);
       });
